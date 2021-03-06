@@ -71,6 +71,7 @@ export default {
     width: 10%;
     margin-left: 20px;
     font-family: 'DotGothic16', sans-serif;
+    height: 38px;
   }
 }
 
