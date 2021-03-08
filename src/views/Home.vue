@@ -48,7 +48,8 @@ export default {
   name: 'Home',
   data(){
     return {
-      pokemonList: []
+      pokemonList: [],
+      pokemonCount: 0
     }
   },
   mounted(){
@@ -61,10 +62,12 @@ export default {
 
       axios
       .get('https://pokeapi.co/api/v2/pokemon/')
-      .then( response => response.data.results )
+      .then( response => response.data )
       .then( response => {
+        this.pokemonCount = response.count;
+        data = response.results;
 
-        for( let pokemon of response ){
+        for( let pokemon of data ){
           fetch(pokemon.url)
           .then( response => response.json() )
           .then( response => {
