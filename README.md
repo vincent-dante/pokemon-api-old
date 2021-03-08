@@ -1,24 +1,15 @@
-# pokemon_project
+# Pokemon PROJECT :sparkles:
 
-## Project setup
-```
-npm install
-```
 
-### Compiles and hot-reloads for development
-```
-npm run serve
-```
+## :construction: Project is on going...
 
-### Compiles and minifies for production
-```
-npm run build
-```
+Hi there :wave: this is my project for Poké API.
 
-### Lints and fixes files
-```
-npm run lint
-```
+## Stack I Use:
 
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
+- :zap: VueJS
+- :star: Express.js
+- :fire: Node.js
+
+## Live Preview
+still not available...
