@@ -12,15 +12,15 @@
     </div>
     <div class="row">
       <div class="col-lg-12">
-        <div class="grid-container rounded-1">
+        <div class="grid-container rounded-3">
 
-          <div class="grid-item rounded-1 shadow" v-for="(pokemon, id) in pokemonList" :key="id">
+          <div class="grid-item rounded-1 shadow" v-for="pokemon in pokemonList" :key="pokemon.id">
             <div class="grid-item-image-container">
               <img :src="pokemon.image" alt="" srcset="">
             </div>
             <p>{{ capitalizeFirstLetter(pokemon.name) }}</p>
             <div class="pokemon-type-container">
-              <span v-for="(type, id) in pokemon.types" :key="id" class="pokemon-type rounded-1">
+              <span v-for="(type, id) in pokemon.types" :key="id" :class="'pokemon-type rounded-1 '+pokemonTypeBackground(type.type.name)">
                 {{ type.type.name }}
               </span>
             </div>
@@ -77,11 +77,30 @@ export default {
         }
 
       })
-      .then( () => this.getPokemonImage() )
       .catch( err => console.error(err) )
     },
     capitalizeFirstLetter(name){
       return name.charAt(0).toUpperCase() + name.slice(1);
+    },
+    pokemonTypeBackground(type){
+      if(type === "normal") return 'type-normal'
+      if(type === "fire")   return 'type-fire'
+      if(type === "water")  return 'type-water'
+      if(type === "grass")  return 'type-grass'
+      if(type === "poison") return 'type-poison'
+      if(type === "flying") return 'type-flying'
+      if(type === "bug")    return 'type-bug'
+      if(type === "electric") return 'type-electric'
+      if(type === "fairy")  return 'type-fairy'
+      if(type === "ground") return 'type-ground'
+      if(type === "fighting") return 'type-fighting'
+      if(type === "psychic") return 'type-psychic'
+      if(type === "ghost")  return 'type-ghost'
+      if(type === "ice")    return 'type-ice'
+      if(type === "rock")   return 'type-rock'
+      if(type === "steel")  return 'type-steel'
+      if(type === "dragon") return 'type-dragon'
+      if(type === "dark")   return 'type-dark'
     }
   }
 }
@@ -132,8 +151,6 @@ export default {
   gap: 20px;
   width: 100%;
   margin-top: 50px;
-  padding: 20px;
-  background: #ececec66;
 }
 
 /* .grid-container::after {
@@ -163,10 +180,13 @@ export default {
 } */
 
 .grid-item {
+  position: relative;
+  top: 0;
   width: 100%;
   background: #fff;
-/*   background: #222;
-  color: #fff; */
+  cursor: pointer;
+  overflow: hidden;
+  transition: all 0.2s;
 
   p {
     padding: 20px 20px 0 20px;
@@ -176,11 +196,21 @@ export default {
 
   .grid-item-image-container {
     padding: 20px;
-    background: #f2f2f2;
+    background: #ebebeb;
+    overflow: hidden;
   }
   img {
-    width: 80%;
+    transition: all 0.8s ease;
+    height: 120px;
   }
+}
+
+.grid-item:hover {
+  top: -10px;
+}
+
+.grid-item:hover img {
+  transform: scale(1.2, 1.2);
 }
 
 .pokemon-type-container {
@@ -195,6 +225,85 @@ export default {
   padding: 2px 20px;
   margin-right: 5px;
 }
+
+.type-normal {
+  background: #b5b5b5;
+  color: #2c3e50;
+}
+
+.type-fire {
+  background: #ff7f27;
+}
+
+.type-fighting {
+  background: #d56723;
+}
+
+.type-flying {
+  background: #8f75ea;
+}
+
+.type-fairy {
+  background: #fdb9e9;
+  color: #222;
+}
+
+.type-water {
+  background: #4592c4;
+}
+
+.type-grass {
+  background: #80a843;
+}
+
+.type-poison {
+  background: #975aa8;
+}
+
+.type-bug {
+  background: #699339;
+}
+
+.type-electric {
+  background: #eed535;
+  color: #222;
+}
+
+.type-ground {
+  background: #cca04b;
+}
+
+.type-psychic {
+  background: #b9607d;
+}
+
+.type-ghost {
+  background: #6a5093;
+}
+
+.type-ice {
+  background: #51c4e7;
+  color: #222;
+}
+
+.type-rock {
+  background: #8f7a18;
+}
+
+.type-steel {
+  background: #9eb7b8;
+}
+
+.type-dragon {
+  background: #d90a0a;
+}
+
+.type-dark {
+  background: #3e3d3d;
+  color: #fff;
+}
+
+
 
 @media only screen and (min-width: 768px) {
   .search-input {
