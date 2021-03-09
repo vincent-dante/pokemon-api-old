@@ -6,14 +6,25 @@
   <div class="container">
     <div class="row">
       <div class="col-lg-12">
-        <input type="text" class="form-control search-input" placeholder="Search Pokemon Here!">        
-        <input type="button" value="Search" class="search-btn">
+        <input type="text" class="form-control search-input" placeholder="Search Pokemon Here!" 
+          v-model="search" 
+          @keyup.enter="searchPokemon">        
+        <input type="button" value="Search" class="search-btn" @click="searchPokemon">
       </div>
     </div>
     <div class="row">
       <div class="col-lg-12">
+        <div class="pagination-container">
+          <a href="#" @click.prevent="prevPage">
+            <i class="bi bi-arrow-left-square-fill"></i>
+          </a>
+          <a href="#" @click.prevent="nextPage">
+            <i class="bi bi-arrow-right-square-fill"></i>
+          </a>
+        </div>
+      </div>      
+      <div class="col-lg-12">
         <div class="grid-container rounded-3">
-
           <div class="grid-item rounded-1 shadow" v-for="pokemon in pokemonList" :key="pokemon.id">
             <div class="grid-item-image-container">
               <img :src="pokemon.image" alt="" srcset="">
@@ -21,7 +32,7 @@
             <p>{{ capitalizeFirstLetter(pokemon.name) }}</p>
             <div class="pokemon-type-container">
               <span v-for="(type, id) in pokemon.types" :key="id" :class="'pokemon-type rounded-1 '+pokemonTypeBackground(type.type.name)">
-                {{ type.type.name }}
+                {{ capitalizeFirstLetter(type.type.name) }}
               </span>
             </div>
 
@@ -49,22 +60,55 @@ export default {
   data(){
     return {
       pokemonList: [],
-      pokemonCount: 0
+      pageOffSet: 0,
+      disabledNextButton: false,
+      disabledPrevButton: false,
+      search: ""
     }
   },
   mounted(){
-    this.loadPokemon()
+    this.loadPokemon(this.pageOffSet);
   },
   methods: {
-    loadPokemon() {
+    searchPokemon(){
+      (this.search.length === 0) ? this.loadPokemon() : this.searchSinglePokemon();
+    },
+    searchSinglePokemon(){
+      
+      this.pokemonList = [];
+      this.disabledNextButton = true;
+      this.disabledPrevButton = true;
       let pokemonData = this.pokemonList;
-      let data = "";
+      let data = [];
+      let search = this.search;
+      search = search.toLowerCase();
 
       axios
-      .get('https://pokeapi.co/api/v2/pokemon/')
+      .get(`https://pokeapi.co/api/v2/pokemon/${search}`)
       .then( response => response.data )
       .then( response => {
-        this.pokemonCount = response.count;
+        data = response;
+        data.image = `https://pokeres.bastionbot.org/images/pokemon/${data.id}.png`;
+        pokemonData.push(data)
+      })
+      .then(() => {
+        this.disabledNextButton = false;
+        this.disabledPrevButton = false;
+      })
+      .catch( err => console.error(err) ) 
+    },
+    loadPokemon(offset) {
+      this.pokemonList = [];
+      this.disabledNextButton = true;
+      this.disabledPrevButton = true;
+      let pokemonData = this.pokemonList;
+      let data = [];
+
+      
+      axios
+      .get(`https://pokeapi.co/api/v2/pokemon/?limit=20&offset=${offset}`)
+      .then( response => response.data )
+      .then( response => {
         data = response.results;
 
         for( let pokemon of data ){
@@ -78,9 +122,13 @@ export default {
           .then( response => pokemonData.push(response) )
           .catch( err => console.error(err) )
         }
-
       })
-      .catch( err => console.error(err) )
+      .then(() => {
+        this.disabledNextButton = false;
+        this.disabledPrevButton = false;
+      })
+      .catch( err => console.error(err) )        
+
     },
     capitalizeFirstLetter(name){
       return name.charAt(0).toUpperCase() + name.slice(1);
@@ -104,6 +152,17 @@ export default {
       if(type === "steel")  return 'type-steel'
       if(type === "dragon") return 'type-dragon'
       if(type === "dark")   return 'type-dark'
+    },
+    nextPage(){
+      if(this.disabledNextButton) return;
+      this.pageOffSet+=20;
+      this.loadPokemon(this.pageOffSet);
+    },
+    prevPage(){
+      if(this.disabledPrevButton) return;
+      if(this.pageOffSet === 0 || this.pokemonList.length === 0) return;
+      this.pageOffSet-=20;
+      this.loadPokemon(this.pageOffSet);
     }
   }
 }
@@ -143,8 +202,13 @@ export default {
 }
 
 .search-btn {
+  background: #2c3e50;
+  border: none;
+  border-radius: 4px;
+  color: #e1e0e0;
   width: 20%;
   margin-left: 10px;
+  transition: all 0.3s;
 }
 
 .grid-container {
@@ -153,7 +217,7 @@ export default {
   grid-template-columns: repeat(5, 1fr);
   gap: 20px;
   width: 100%;
-  margin-top: 50px;
+  margin-top: 20px;
 }
 
 /* .grid-container::after {
@@ -306,6 +370,31 @@ export default {
   color: #fff;
 }
 
+.pagination-container {
+  margin-top: 20px;
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+
+  a {
+    font-size: 30px;
+    color: #2c3e50;
+    outline: none;
+  }
+
+  a:first-child {
+    margin-right: 20px;
+  }
+
+  i {
+    transition: all 0.3s;
+  }
+
+  a:hover i, a:focus i {
+    color: #202020;
+  }
+}
+
 
 
 @media only screen and (min-width: 768px) {
@@ -316,8 +405,12 @@ export default {
   .search-btn {
     width: 10%;
     margin-left: 20px;
-    font-family: 'DotGothic16', sans-serif;
     height: 38px;
+  }
+
+  .search-btn:hover, .search-btn:focus {
+    background: #202020;
+    color: #fff;
   }
 }
 
