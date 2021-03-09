@@ -79,6 +79,8 @@ export default {
 
   .pokemon-content {
     display: flex;
+
+    //flex-grow: 8
   }
 
   img {
