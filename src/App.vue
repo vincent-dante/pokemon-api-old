@@ -1,5 +1,9 @@
 <template>  
   <div id="app-container">
+    <div class="logo-container">
+      <img src="./assets/pokemon-logo.png" alt="" srcset="" class="logo">
+    </div>
+
     <router-view/>
   </div>
 
@@ -41,6 +45,25 @@ html, body {
     height: 100%;
     width: 1100px;
   }  
+}
+
+@keyframes bounce {
+  0%, 100% {
+    bottom: 0;
+  }
+  50% {
+    bottom: 10px;
+  }
+}
+
+.logo-container {
+  position: relative;
+  bottom: 0;
+  animation: bounce 1.2s linear infinite;
+}
+
+.logo {
+  width: 250px;
 }
 
 @media only screen and (min-width: 768px) {

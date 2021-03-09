@@ -1,12 +1,8 @@
 <template>
-  <div class="logo-container">
-   <img src="../assets/pokemon-logo.png" alt="" srcset="" class="logo">
-  </div>
-
   <div class="container">
     <div class="row">
       <div class="col-lg-12">
-        <input type="text" class="form-control search-input" placeholder="Search Pokemon Here!" 
+        <input type="text" class="form-control search-input" placeholder="Search pokemon...." 
           v-model="search" 
           @keyup.enter="searchPokemon">        
         <input type="button" value="Search" class="search-btn" @click="searchPokemon">
@@ -25,7 +21,7 @@
       </div>      
       <div class="col-lg-12">
         <div class="grid-container rounded-3">
-          <div class="grid-item rounded-1 shadow" v-for="pokemon in pokemonList" :key="pokemon.id">
+          <div class="grid-item rounded-1 shadow" v-for="pokemon in pokemonList" :key="pokemon.id" @click="showPokemonPage(pokemon.id)">
             <div class="grid-item-image-container">
               <img :src="pokemon.image" alt="" srcset="">
             </div>
@@ -35,7 +31,6 @@
                 {{ capitalizeFirstLetter(type.type.name) }}
               </span>
             </div>
-
           </div>
         </div>  
 
@@ -67,14 +62,17 @@ export default {
     }
   },
   mounted(){
+
     this.loadPokemon(this.pageOffSet);
+
   },
   methods: {
     searchPokemon(){
+
       (this.search.length === 0) ? this.loadPokemon() : this.searchSinglePokemon();
+
     },
     searchSinglePokemon(){
-      
       this.pokemonList = [];
       this.disabledNextButton = true;
       this.disabledPrevButton = true;
@@ -130,6 +128,11 @@ export default {
       .catch( err => console.error(err) )        
 
     },
+    showPokemonPage(id){
+
+      this.$router.push({ path: `/pokemon/${id}`})  
+      
+    },
     capitalizeFirstLetter(name){
       return name.charAt(0).toUpperCase() + name.slice(1);
     },
@@ -155,12 +158,14 @@ export default {
     },
     nextPage(){
       if(this.disabledNextButton) return;
+      if(this.pokemonList.length === 1) return;
       this.pageOffSet+=20;
       this.loadPokemon(this.pageOffSet);
     },
     prevPage(){
       if(this.disabledPrevButton) return;
-      if(this.pageOffSet === 0 || this.pokemonList.length === 0) return;
+      if(this.pageOffSet === 0) return;
+      if(this.pokemonList.length === 0) return;
       this.pageOffSet-=20;
       this.loadPokemon(this.pageOffSet);
     }
@@ -168,28 +173,7 @@ export default {
 }
 </script>
 
-<style lang="scss">
-
-
-@keyframes bounce {
-  0%, 100% {
-    bottom: 0;
-  }
-  50% {
-    bottom: 10px;
-  }
-}
-
-.logo-container {
-  position: relative;
-  bottom: 0;
-  animation: bounce 1.2s linear infinite;
-}
-
-.logo {
-  width: 250px;
-}
-
+<style lang="scss" scoped>
 .search-input, 
 .search-btn 
 {
@@ -219,32 +203,6 @@ export default {
   width: 100%;
   margin-top: 20px;
 }
-
-/* .grid-container::after {
-  content: "";
-  position: absolute;
-  top: 25%;
-  right: -50px;
-  width: 0;
-  height: 50%;
-  border-left: solid #ececec 50px;
-  border-right: solid transparent 0;
-  border-bottom: solid transparent 100px;
-  border-top: solid transparent 100px;
-}
-
-.grid-container::before {
-  content: "";
-  position: absolute;
-  top: 25%;
-  left: -50px;
-  width: 0;
-  height: 50%;
-  border-right: solid #ececec 50px;
-  border-left: solid transparent 0;
-  border-bottom: solid transparent 100px;
-  border-top: solid transparent 100px;
-} */
 
 .grid-item {
   position: relative;
