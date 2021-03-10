@@ -12,7 +12,7 @@
             <div class="pokemon-content">
               <img :src="pokemon.image" alt="">
               <div>
-                <h1>{{ pokemon.name }}</h1>
+                <h1>{{ capitalizeFirstLetter(''+pokemon.name+'') }}</h1>
                 <p>
                   
                 </p>
