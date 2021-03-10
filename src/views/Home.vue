@@ -22,10 +22,15 @@
       <div class="col-lg-12">
         <div class="grid-container rounded-3">
           <div class="grid-item rounded-1 shadow" v-for="pokemon in pokemonList" :key="pokemon.id" @click="showPokemonPage(pokemon.id)">
+            <p class="clearfix">
+              <span class="pokemon-id rounded-1">#{{ pokemon.id }}</span>
+            </p>
             <div class="grid-item-image-container">
               <img :src="pokemon.image" alt="" srcset="">
             </div>
-            <p>{{ capitalizeFirstLetter(pokemon.name) }}</p>
+
+            <p class="text-center">{{ capitalizeFirstLetter(pokemon.name) }} </p>
+
             <div class="pokemon-type-container">
               <span v-for="(type, id) in pokemon.types" :key="id" :class="'pokemon-type rounded-1 '+pokemonTypeBackground(type.type.name)">
                 {{ capitalizeFirstLetter(type.type.name) }}
@@ -221,7 +226,6 @@ export default {
 
   .grid-item-image-container {
     padding: 20px;
-    background: #ebebeb;
     overflow: hidden;
   }
   img {
@@ -238,95 +242,7 @@ export default {
   transform: scale(1.2, 1.2);
 }
 
-.pokemon-type-container {
-  text-align: left;
-  font-size: 14px;
-  padding: 20px;
-  color: #fff;
-}
 
-.pokemon-type {
-  background: #222;
-  padding: 2px 20px;
-  margin-right: 5px;
-}
-
-.type-normal {
-  background: #b5b5b5;
-  color: #2c3e50;
-}
-
-.type-fire {
-  background: #ff7f27;
-}
-
-.type-fighting {
-  background: #d56723;
-}
-
-.type-flying {
-  background: #8f75ea;
-}
-
-.type-fairy {
-  background: #fdb9e9;
-  color: #222;
-}
-
-.type-water {
-  background: #4592c4;
-}
-
-.type-grass {
-  background: #80a843;
-}
-
-.type-poison {
-  background: #975aa8;
-}
-
-.type-bug {
-  background: #699339;
-}
-
-.type-electric {
-  background: #eed535;
-  color: #222;
-}
-
-.type-ground {
-  background: #cca04b;
-}
-
-.type-psychic {
-  background: #b9607d;
-}
-
-.type-ghost {
-  background: #6a5093;
-}
-
-.type-ice {
-  background: #51c4e7;
-  color: #222;
-}
-
-.type-rock {
-  background: #8f7a18;
-}
-
-.type-steel {
-  background: #9eb7b8;
-}
-
-.type-dragon {
-  background: #d90a0a;
-}
-
-.type-dark {
-  background: #3e3d3d;
-  color: #fff;
-}
 
 .pagination-container {
   margin-top: 20px;
