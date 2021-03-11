@@ -213,7 +213,7 @@ export default {
   position: relative;
   top: 0;
   width: 100%;
-  background: #fff;
+  background: #f2f2f2;
   cursor: pointer;
   overflow: hidden;
   transition: all 0.2s;

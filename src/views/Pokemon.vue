@@ -2,7 +2,7 @@
   <div class="container">
     <div class="row">    
       <div class="col-lg-12">
-        <div class="pokemon-container rounded-1">
+        <div class="pokemon-container rounded-1 shadow">
           
           <div>
             <p class="clearfix">
@@ -13,40 +13,50 @@
               <img :src="pokemon.image" alt="">
               <div>
                 <h1>{{ capitalizeFirstLetter(''+pokemon.name+'') }}</h1>
-                <p>
-                  
-                </p>
-                <div class="pokemon-type-container">
+
+                <div class="content-div pokemon-type-size">
+                  <span class="content-title">Type: </span>
                   <span v-for="(type, id) in pokemon.types" :key="id" :class="'pokemon-type rounded-1 '+pokemonTypeBackground(type.type.name)">
                     {{ capitalizeFirstLetter(type.type.name) }}
                   </span>
                 </div>
-                <p>Abilities: 
-                  <span v-for="(ability, id) in pokemon.abilities" :key="id">
-                    {{ ability.ability.name }} /
-                  </span>
-                </p>
-                <p>
-                  Height: {{ pokemon.height }}, 
-                  Weight: {{ pokemon.weight }}
-                </p>
-                <p>
-                  Based Experience: {{ pokemon.base_experience }}
-                </p>
-                <p>
-                  Stats:
-                </p>
-                <div class="stats-container">
-                  <div v-for="(stats, id) in pokemon.stats" :key="id">
-                    <p>
-                      {{ stats.base_stat }}
-                    </p>                  
-                    <p>
-                      {{ stats.stat.name }}
-                    </p>
-                  </div>
 
+                <div class="content-div">
+                  <span class="content-title">Abilities: </span> 
+                  <span v-for="(ability, id) in pokemon.abilities" :key="id" class="pokemon-ability rounded-1">
+                    {{ capitalizeFirstLetter(ability.ability.name) }}
+                  </span>
                 </div>
+
+                <div class="content-div">
+                  <span class="content-title">Height: </span> 
+                  <span class="content-value">{{ pokemon.height }}</span>
+                </div>
+
+                <div class="content-div">
+                  <span class="content-title">Weight: </span> 
+                  <span class="content-value">{{ pokemon.weight }}</span>
+                </div>
+                
+                <div class="content-div">
+                  <span class="content-title">Based Experience: </span> 
+                  <span class="content-value">{{ pokemon.base_experience }}</span>
+                </div>
+
+                <hr>
+                
+                <div>
+                  <span class="content-title">Stats:</span>
+                  <div class="stats-container">
+                    <div v-for="(stats, id) in pokemon.stats" :key="id" class="stats-item">
+                      <span>
+                        <b>{{ statsFormatName(stats.stat.name) }}: </b> 
+                        <span class="content-value">{{ stats.base_stat }}</span>
+                      </span>                  
+                    </div>
+                  </div>                
+                </div>
+
               </div>              
             </div>
           </div>
@@ -56,6 +66,14 @@
       </div>
     </div>
   </div>
+
+  <br>
+  <br>
+  <br>
+  <br>
+  <br>
+  <br>
+  <br>  
 </template>
 
 <script>
@@ -125,6 +143,11 @@ export default {
       if(type === "steel")  return 'type-steel'
       if(type === "dragon") return 'type-dragon'
       if(type === "dark")   return 'type-dark'
+    },
+    statsFormatName(name) {
+      if(name.includes('special-attack')) return 'sp. attack';
+      if(name.includes('special-defense')) return 'sp. defense';
+      return name;
     }
   }
 }
@@ -132,7 +155,7 @@ export default {
 
 <style lang="scss" scoped>
 .pokemon-container {
-  background: #fff;
+  background: #f2f2f2;
   padding: 20px;
   width: 80%;
   margin: 0 auto;
@@ -154,10 +177,46 @@ export default {
 .stats-container {
   display: inline-grid;
   grid-template-columns: repeat(3, 1fr);
+  width: 100%;
+  margin-bottom: 40px;
+}
+
+.stats-item {
+  padding: 10px 20px 0 0;  
 }
 
 .pokemon-type-container {
   justify-content: left;
   padding: 20px 0;
+}
+
+.content-title {
+  color: #2c3e50;
+  font-weight: bold;
+}
+
+.content-value {
+  color: #d6317e;
+}
+
+.content-div {
+  padding-top: 20px;
+}
+
+.pokemon-ability {
+  padding: 2px 20px;
+  margin-right: 5px;
+  background: #567080;
+  color: #fff;
+  font-size: 14px;
+}
+
+.pokemon-type-size span:last-child {
+  font-size: 14px;
+  padding: 2px 20px;
+}
+
+.pokemon-type-size {
+  color: #fff;
 }
 </style>
