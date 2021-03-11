@@ -6,6 +6,10 @@
           
           <div>
             <p class="clearfix">
+              <a href="#" @click.prevent="goBack()" class="btn btn-dark btn-back">
+                <i class="bi bi-arrow-left-short"></i> 
+                Back
+              </a>
               <span class="pokemon-id rounded-1">#{{ pokemon.id }}</span>
             </p>
 
@@ -148,6 +152,11 @@ export default {
       if(name.includes('special-attack')) return 'sp. attack';
       if(name.includes('special-defense')) return 'sp. defense';
       return name;
+    },
+    goBack(){
+
+      this.$router.go(-1)
+
     }
   }
 }
@@ -218,5 +227,10 @@ export default {
 
 .pokemon-type-size {
   color: #fff;
+}
+
+.btn-back {
+  float: left;
+  padding: 0 10px;
 }
 </style>
