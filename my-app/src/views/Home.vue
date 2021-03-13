@@ -87,8 +87,7 @@ export default {
       search = search.toLowerCase();
 
       axios
-      .get(`https://pokeapi.co/api/v2/pokemon/${search}`)
-      .then( response => response.data )
+      .get(`/pokemon/${search}`)
       .then( response => {
         data = response;
         data.image = `https://pokeres.bastionbot.org/images/pokemon/${data.id}.png`;
@@ -104,29 +103,17 @@ export default {
       this.pokemonList = [];
       this.disabledNextButton = true;
       this.disabledPrevButton = true;
-      let pokemonData = this.pokemonList;
-      let data = [];
-
       
       axios
-      .get(`https://pokeapi.co/api/v2/pokemon/?limit=20&offset=${offset}`)
-      .then( response => response.data )
-      .then( response => {
-        data = response.results;
-
-        for( let pokemon of data ){
-          fetch(pokemon.url)
-          .then( response => response.json() )
-          .then( response => {
-            data = response;
-            data.image = `https://pokeres.bastionbot.org/images/pokemon/${data.id}.png`;
-            return data
-          })
-          .then( response => pokemonData.push(response) )
-          .catch( err => console.error(err) )
+      .get('/pokemon', {
+        params: {
+          offset: `${offset}`
         }
       })
-      .then(() => {
+      .then( response => {
+        this.pokemonList = response.data;
+      })
+      .then( () => {
         this.disabledNextButton = false;
         this.disabledPrevButton = false;
       })
