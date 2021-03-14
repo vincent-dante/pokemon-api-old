@@ -210,6 +210,10 @@ body {
   background: #3e3d3d;
 }
 
+.data-provider {
+  margin-bottom: 100px;
+}
+
 @keyframes bounce {
   0%, 100% {
     bottom: 0;

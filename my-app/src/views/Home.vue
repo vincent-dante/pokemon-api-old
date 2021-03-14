@@ -31,6 +31,7 @@
                 <span class="pokemon-type rounded-pill">{{ capitalizeFirstLetter(type.type.name) }}</span>
               </span>
             </div>
+
           </div>
 
         </div>

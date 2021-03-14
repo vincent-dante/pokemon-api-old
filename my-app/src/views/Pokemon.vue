@@ -11,7 +11,6 @@
           </svg>
         </div>
 
-
         <div class="pokemon-header">
           <a @click="$router.go(-1)">
             <i class="bi bi-arrow-left"></i>
@@ -19,18 +18,61 @@
           </a>
         </div>
 
+        <div class="pokemon-left-text-design text-uppercase">
+          <h1>{{ pokemon.name }}</h1>
+        </div>
+
         <img :src="pokemon.image" alt="" srcset="">
 
         <div class="pokemon-body">
-          <h1>{{ capitalizeFirstLetter(pokemon.name) }}</h1>
+          <h1 class="text-capitalize">{{ pokemon.name }}</h1>
           
           <div class="pokemon-type-container">
             <span v-for="(type, id) in pokemon.types" :key="id" :class="pokemonTypeBackground(type.type.name)">
-              <span class="pokemon-type rounded-pill">{{ capitalizeFirstLetter(type.type.name) }}</span>
+              <span class="pokemon-type rounded-pill text-capitalize">{{ type.type.name }}</span>
             </span>
           </div>
 
-          
+          <div class="pokemon-content">
+                <div class="content-div">
+                  
+                  <span v-for="(ability, id) in pokemon.abilities" :key="id" class="pokemon-ability rounded-1 text-capitalize">
+                    {{ ability.ability.name }}
+                  </span>
+                  <h2 class="content-title">Abilities</h2>
+                </div>
+                 
+
+                <div class="content-div">
+                  <span class="content-title">Height: </span> 
+                  <span class="content-value">{{ pokemon.height }}</span>
+                </div>
+
+                <div class="content-div">
+                  <span class="content-title">Weight: </span> 
+                  <span class="content-value">{{ pokemon.weight }}</span>
+                </div>
+                
+                <div class="content-div">
+                  <span class="content-title">Based Experience: </span> 
+                  <span class="content-value">{{ pokemon.base_experience }}</span>
+                </div>
+
+                <hr>
+                
+                <div>
+                  <span class="content-title">Stats:</span>
+                  <div class="stats-container">
+                    <div v-for="(stats, id) in pokemon.stats" :key="id" class="stats-item">
+                      <span>
+                        {{ statsFormatName(stats.stat.name) }}: 
+                        <span class="content-value">{{ stats.base_stat }}</span>
+                      </span>                  
+                    </div>
+                  </div>                
+                </div>            
+          </div>
+
         </div>
         
       </div>
@@ -91,11 +133,6 @@ export default {
       .catch( err => console.error(err) )        
 
     },
-    capitalizeFirstLetter(name){
-
-      return name.charAt(0).toUpperCase() + name.slice(1);
-
-    },
     pokemonTypeBackground(type){
 
       if(type === "normal") return 'type-normal'
@@ -138,7 +175,7 @@ export default {
 .pokemon-container {
   position: relative;
   width: 80%;
-  height: 500px;
+  min-height: 500px;
   margin: 0px auto;
   border-radius: 1rem !important;
   overflow: hidden;
@@ -152,6 +189,27 @@ export default {
 
     a {
       cursor: pointer;
+    }
+  }
+
+  .pokemon-left-text-design {
+    position: absolute;
+    transform: rotate(-90deg);
+    left: -100px;
+    bottom: 100px;
+
+    h1 {
+      padding: 0;
+    }
+
+    h1::before {
+      content: "";
+      display: inline-block;
+      background: #d5d5d5;
+      width: 200px;
+      height: 1px;
+      transform: translateY(-9px);
+      margin-right: 20px;
     }
   }
 
@@ -179,8 +237,10 @@ export default {
   }
 
   .pokemon-content {
-    width: 100%;
+    width: 70%;
     text-align: left;
+    margin: 0 auto;
+    padding: 20px 0 50px 0;
 
     .content-div {
       padding-top: 20px;
@@ -206,7 +266,6 @@ export default {
 
     .content-title {
       color: #2c3e50;
-      font-weight: bold;
     }
 
     .content-value {
