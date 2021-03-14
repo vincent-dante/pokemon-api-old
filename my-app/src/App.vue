@@ -1,21 +1,34 @@
 <template>  
-  <div id="app-container">
-    <div class="logo-container">
-      <img src="./assets/pokemon-logo.png" alt="" srcset="" class="logo">
+  
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-12">
+        <div class="container app-container">
+          <div class="logo-container">
+            <img src="./assets/pokemon-logo.png" alt="" srcset="" class="logo">
+          </div>
+
+          <router-view/>
+        </div>
+      </div>
     </div>
+    <div class="row">
+      <div class="col-lg-12">
 
-    <router-view/>
+        <div class="data-provider">
+          <p class="text-muted">Data provided by PokeApi</p>
+          <small class="text-muted">Project By: Vincent Dante</small>
+        </div>
+        
+      </div>
+    </div>
   </div>
-
-  <div class="background-container">
-    <img src="./assets/background.gif" alt="" srcset="">  
-  </div>  
+ 
 </template>
 
 <style lang="scss">
-html, body {
-  padding: 0;
-  margin: 0;
+body {
+  background: #f0f0f0;
 }
 
 #app {
@@ -29,6 +42,7 @@ html, body {
 
 .app-container {
   position: relative;
+  margin: 50px 0;
 }
 
 .background-container {
@@ -63,10 +77,10 @@ html, body {
 }
 
 .pokemon-id {
-  background: #567080;
-  color: #fff;
+  background: #fff;
   padding: 0 10px;
   float: right;
+  font-size: 14px;
 }
 
 .pokemon-type {
@@ -76,12 +90,24 @@ html, body {
 }
 
 .type-normal {
+  fill: #b5b5b5;
+
   background: #b5b5b5;
   color: #2c3e50;
 }
 
 .type-fire {
-  background: #ff7f27;
+  path {
+    fill: #ff8351;
+  }
+
+  .box-item {
+    background-image: linear-gradient( to bottom right, #ffba8b, #ff7f27);
+  }
+
+  .pokemon-type {
+    background: #ff6427;
+  }
 }
 
 .type-fighting {
@@ -102,11 +128,33 @@ html, body {
 }
 
 .type-grass {
-  background: #80a843;
+  path {
+    fill: #9ed78e;
+  }
+
+  .box-item {
+    background-image: linear-gradient( to bottom right, #b8df7d, #80a843);
+  }
+
+  .pokemon-type {
+    background: #548a45;
+  }
 }
 
 .type-poison {
-  background: #975aa8;
+/*   background: #975aa8;
+
+  path {
+    fill: #9ed78e;
+  }
+
+  .box-item {
+    background-image: linear-gradient( to bottom right, #b8df7d, #80a843);
+  } */
+
+  .pokemon-type {
+    background: #975aa8;
+  }
 }
 
 .type-bug {
@@ -114,8 +162,18 @@ html, body {
 }
 
 .type-electric {
-  background: #eed535;
-  color: #222;
+  path {
+    fill: #ffe53c;
+  }
+
+  .box-item {
+    background-image: linear-gradient( to bottom right, #ffe88c, #ff8f00);
+  }
+
+  .pokemon-type {
+    background: #ffe53c;
+    color: #222;
+  }
 }
 
 .type-ground {
@@ -148,6 +206,7 @@ html, body {
 }
 
 .type-dark {
+  fill: #3e3d3d;
   background: #3e3d3d;
 }
 

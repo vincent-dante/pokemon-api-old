@@ -1,29 +1,24 @@
 <template>
-  <div class="container">
-    <div class="row">
-      <div class="col-lg-12">
-        <input type="text" class="form-control search-input" placeholder="Search pokemon...." 
+
+  <div class="row">
+    <div class="col-lg-12">
+      <div class="input-group search-container">
+        <input type="text" class="form-control search-input" placeholder="Search by name, id" 
           v-model="search" 
           @keyup.enter="searchPokemon">        
-        <input type="button" value="Search" class="search-btn" @click="searchPokemon">
+        <button type="button" class="search-btn" @click="searchPokemon">Search</button>
       </div>
     </div>
-    <div class="row">
-      <div class="col-lg-12">
-        <div class="pagination-container">
-          <a href="#" @click.prevent="prevPage">
-            <i class="bi bi-arrow-left-square-fill"></i>
-          </a>
-          <a href="#" @click.prevent="nextPage">
-            <i class="bi bi-arrow-right-square-fill"></i>
-          </a>
-        </div>
-      </div>      
-      <div class="col-lg-12">
-        <div class="grid-container rounded-3">
-          <div class="grid-item rounded-1 shadow" v-for="pokemon in pokemonList" :key="pokemon.id" @click="showPokemonPage(pokemon.id)">
+  </div>
+  <div class="row">
+    <div class="col-lg-12">
+
+      <div class="box-container">
+        <div :class="'box-item-container shadow '+pokemonTypeBackground(pokemon.types[0].type.name)" v-for="pokemon in pokemonList" :key="pokemon.id">
+
+          <div class="box-item" @click="showPokemonPage(pokemon.id)">
             <p class="clearfix">
-              <span class="pokemon-id rounded-1">#{{ pokemon.id }}</span>
+              <span class="pokemon-id rounded-pill">#{{ pokemon.id }}</span>
             </p>
             <div class="grid-item-image-container">
               <img :src="pokemon.image" alt="" srcset="">
@@ -32,24 +27,18 @@
             <p class="text-center">{{ capitalizeFirstLetter(pokemon.name) }} </p>
 
             <div class="pokemon-type-container">
-              <span v-for="(type, id) in pokemon.types" :key="id" :class="'pokemon-type rounded-1 '+pokemonTypeBackground(type.type.name)">
-                {{ capitalizeFirstLetter(type.type.name) }}
+              <span v-for="(type, id) in pokemon.types" :key="id" :class="pokemonTypeBackground(type.type.name)">
+                <span class="pokemon-type rounded-pill">{{ capitalizeFirstLetter(type.type.name) }}</span>
               </span>
             </div>
           </div>
-        </div>  
 
-      </div>
+        </div>
+      </div>  
+
     </div>
   </div>
-  
-  <br>
-  <br>
-  <br>
-  <br>
-  <br>
-  <br>
-  <br>
+
 </template>
 
 <script>
@@ -59,65 +48,51 @@ export default {
   name: 'Home',
   data(){
     return {
-      pokemonList: [],
+
+      pokemonList: {},
+      pokemonData: {},
       pageOffSet: 0,
       disabledNextButton: false,
       disabledPrevButton: false,
       search: ""
+
     }
   },
   mounted(){
 
-    this.loadPokemon(this.pageOffSet);
+    this.searchPokemon();
 
   },
   methods: {
     searchPokemon(){
 
-      (this.search.length === 0) ? this.loadPokemon() : this.searchSinglePokemon();
+      if (this.search.length === 0) this.loadPokemonHomePage();
+      if (this.search.length !== 0) this.searchSinglePokemon();
+
+    },
+    loadPokemonHomePage() {
+
+      axios
+      .get(`/pokemon`)
+      .then( response => this.pokemonList = response.data )
+      .catch( err => console.error(err) ) 
 
     },
     searchSinglePokemon(){
-      this.pokemonList = [];
-      this.disabledNextButton = true;
-      this.disabledPrevButton = true;
-      let pokemonData = this.pokemonList;
+
       let data = [];
       let search = this.search;
       search = search.toLowerCase();
 
       axios
-      .get(`/pokemon/${search}`)
+      .get(`/pokemon/search/${search}`)
       .then( response => {
-        data = response;
+        data = response.data;
         data.image = `https://pokeres.bastionbot.org/images/pokemon/${data.id}.png`;
-        pokemonData.push(data)
-      })
-      .then(() => {
-        this.disabledNextButton = false;
-        this.disabledPrevButton = false;
+        this.pokemonList = [];
+        this.pokemonList.push(data);
       })
       .catch( err => console.error(err) ) 
-    },
-    loadPokemon(offset) {
-      this.pokemonList = [];
-      this.disabledNextButton = true;
-      this.disabledPrevButton = true;
-      
-      axios
-      .get('/pokemon', {
-        params: {
-          offset: `${offset}`
-        }
-      })
-      .then( response => {
-        this.pokemonList = response.data;
-      })
-      .then( () => {
-        this.disabledNextButton = false;
-        this.disabledPrevButton = false;
-      })
-      .catch( err => console.error(err) )        
 
     },
     showPokemonPage(id){
@@ -126,9 +101,12 @@ export default {
       
     },
     capitalizeFirstLetter(name){
+
       return name.charAt(0).toUpperCase() + name.slice(1);
+
     },
     pokemonTypeBackground(type){
+
       if(type === "normal") return 'type-normal'
       if(type === "fire")   return 'type-fire'
       if(type === "water")  return 'type-water'
@@ -147,63 +125,60 @@ export default {
       if(type === "steel")  return 'type-steel'
       if(type === "dragon") return 'type-dragon'
       if(type === "dark")   return 'type-dark'
-    },
-    nextPage(){
-      if(this.disabledNextButton) return;
-      if(this.pokemonList.length === 1) return;
-      this.pageOffSet+=20;
-      this.loadPokemon(this.pageOffSet);
-    },
-    prevPage(){
-      if(this.disabledPrevButton) return;
-      if(this.pageOffSet === 0) return;
-      if(this.pokemonList.length === 0) return;
-      this.pageOffSet-=20;
-      this.loadPokemon(this.pageOffSet);
+
     }
   }
 }
 </script>
 
 <style lang="scss" scoped>
-.search-input, 
-.search-btn 
-{
-  display: inline-block;
-}
-
-.search-input {
-  width: 70%;
-  margin: 0 auto;
-}
-
-.search-btn {
-  background: #2c3e50;
-  border: none;
-  border-radius: 4px;
-  color: #e1e0e0;
-  width: 20%;
-  margin-left: 10px;
-  transition: all 0.3s;
-}
-
-.grid-container {
-  position: relative;
-  display: inline-grid;
-  grid-template-columns: repeat(5, 1fr);
-  gap: 20px;
+.search-container {
   width: 100%;
-  margin-top: 20px;
+  margin: 0 auto;
+
+  .search-input {
+    padding-left: 20px;
+    border-top-left-radius: 20px;
+    border-bottom-left-radius: 20px;
+  }
+
+  .search-btn {
+    background: #2c3e50;
+    border: none;
+    border-top-right-radius: 20px;
+    border-bottom-right-radius: 20px;
+    color: #e1e0e0;
+    width: 30%;
+    outline: none;
+    transition: all 0.3s;
+  }
+
+  .search-btn:hover {
+    background: #233240;
+  }
 }
 
-.grid-item {
+.box-container {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  margin-top: 50px;
+  min-height: 380px;
+}
+
+.box-item-container {
   position: relative;
   top: 0;
   width: 100%;
-  background: #f2f2f2;
-  cursor: pointer;
+  margin: 20px;
   overflow: hidden;
   transition: all 0.2s;
+  border-radius: 4%;
+  cursor: pointer;
+}
+
+.box-item {
+  height: 100%;
 
   p {
     padding: 20px 20px 0 20px;
@@ -215,64 +190,69 @@ export default {
     padding: 20px;
     overflow: hidden;
   }
+
   img {
     transition: all 0.8s ease;
-    height: 120px;
+    height: 150px;
   }
 }
 
-.grid-item:hover {
+.box-item-container:hover {
   top: -10px;
 }
 
-.grid-item:hover img {
+.box-item:hover img {
   transform: scale(1.2, 1.2);
 }
 
-
-
-.pagination-container {
-  margin-top: 20px;
-  display: flex;
-  flex-direction: row;
-  justify-content: flex-end;
+.pokemon-list-container {
+  margin-top: 200px;
+  
+  h2 {
+    font-size: 20px;
+  }
+  
+  .pokemon-list {
+    margin-top: 40px;
+  }
 
   a {
-    font-size: 30px;
-    color: #2c3e50;
-    outline: none;
-  }
-
-  a:first-child {
-    margin-right: 20px;
-  }
-
-  i {
-    transition: all 0.3s;
-  }
-
-  a:hover i, a:focus i {
-    color: #202020;
+    font-style: italic;
+    text-decoration: none;
+    padding: 0 10px;
+    display: inline-block;
+    font-size: 14px;
   }
 }
 
+.data-provider {
+  margin-top: 50px;
+}
 
+.pagination-container-button {
+  padding-top: 40px;
+}
 
 @media only screen and (min-width: 768px) {
-  .search-input {
-    width: 30%;
-  }
+  .search-container {
+    width: 50%;
 
-  .search-btn {
-    width: 10%;
-    margin-left: 20px;
-    height: 38px;
+    .search-btn {
+      width: 20%;
+      margin-left: 20px;
+      height: 38px;
+    }    
   }
 
   .search-btn:hover, .search-btn:focus {
-    background: #202020;
+    background: #233240;
     color: #fff;
   }
+  
+  .box-item-container {
+    width: 20%;
+  }
+
 }
 
 </style>

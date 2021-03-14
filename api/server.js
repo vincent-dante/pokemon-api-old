@@ -8,40 +8,31 @@ const port = 3000
 
 app.get('/pokemon', (req, res) => {
 
-  fetch(`https://pokeapi.co/api/v2/pokemon/?limit=20&offset=${req.query.offset}`)
-  .then( response => {
-    return response.json()
-  })
-  .then( response => {
-    let data = response.results;
-    let pokemonData = [];
+  let pokemonIds = [4, 25, 1];
+  let pokemons = [];
 
-    async function getPokemon() {
-      for( let pokemon of data ){
-        let poke = await fetch(pokemon.url)
-        poke = await poke.json();
-        poke.image = await `https://pokeres.bastionbot.org/images/pokemon/${poke.id}.png`;
-        pokemonData.push(poke);
-      }
+  async function getPokemon(ids) {
+    for( let id of ids ){
+      let poke = await fetch(`https://pokeapi.co/api/v2/pokemon/${id}`)
+      poke = await poke.json();
+      poke.image = await `https://pokeres.bastionbot.org/images/pokemon/${poke.id}.png`;
+      pokemons.push(poke);
     }
+  }
 
-    getPokemon().then( () => res.send(pokemonData))
-    
-  })
-  .catch(err => console.error(err));
+  getPokemon(pokemonIds).then( () => res.send(pokemons))
 
 })
 
 
-app.get('/pokemon/:name', (req, res) => {
+app.get('/pokemon/search/:name', (req, res) => {
 
   fetch(`https://pokeapi.co/api/v2/pokemon/${req.params.name}`)
-  .then(res => {
-    return res.json()
+  .then( response => {
+    return response.json()
   })
-  .then(json => {
-    console.log(json)
-    res.send(json)
+  .then( response => {
+    res.send(response)
   })
   .catch(err => console.error(err));
 

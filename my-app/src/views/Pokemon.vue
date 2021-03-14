@@ -1,80 +1,42 @@
 <template>
-  <div class="container">
-    <div class="row">    
-      <div class="col-lg-12">
-        <div class="pokemon-container rounded shadow">
+
+  <div class="row">    
+    <div class="col-lg-12">
+      <div class="pokemon-container shadow-lg">
+        
+        <div :class="pokemonTypeBackground(pokemon.types[0].type.name)">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320">
+            <path fill-opacity="1" d="M0,256L48,229.3C96,203,192,149,288,154.7C384,160,480,224,576,256C672,288,768,288,864,250.7C960,213,1056,139,1152,106.7C1248,75,1344,85,1392,90.7L1440,96L1440,0L1392,0C1344,0,1248,0,1152,0C1056,0,960,0,864,0C768,0,672,0,576,0C480,0,384,0,288,0C192,0,96,0,48,0L0,0Z">
+            </path>
+          </svg>
+        </div>
+
+
+        <div class="pokemon-header">
+          <a @click="$router.go(-1)">
+            <i class="bi bi-arrow-left"></i>
+            Back
+          </a>
+        </div>
+
+        <img :src="pokemon.image" alt="" srcset="">
+
+        <div class="pokemon-body">
+          <h1>{{ capitalizeFirstLetter(pokemon.name) }}</h1>
           
+          <div class="pokemon-type-container">
+            <span v-for="(type, id) in pokemon.types" :key="id" :class="pokemonTypeBackground(type.type.name)">
+              <span class="pokemon-type rounded-pill">{{ capitalizeFirstLetter(type.type.name) }}</span>
+            </span>
+          </div>
 
-            <div class="clearfix">
-              <a href="#" @click.prevent="goBack()" class="btn-back">
-                <i class="bi bi-arrow-left"></i>
-                Back
-              </a>
-              <span class="pokemon-id rounded-1">#{{ pokemon.id }}</span>
-            </div>
-
-           
-              <img :src="pokemon.image" alt="">
-
-              <h1>{{ capitalizeFirstLetter(''+pokemon.name+'') }}</h1>
-
-              <div class="pokemon-content">
-                <div>
-                  <div class="content-div pokemon-type-size">
-                    <span v-for="(type, id) in pokemon.types" :key="id" :class="'pokemon-type rounded-1 '+pokemonTypeBackground(type.type.name)">
-                      {{ capitalizeFirstLetter(type.type.name) }}
-                    </span>
-                  </div>
-
-                  <div class="content-div text-center">
-                    <span v-for="(ability, id) in pokemon.abilities" :key="id" class="pokemon-ability rounded-1">
-                      {{ capitalizeFirstLetter(ability.ability.name) }}
-                    </span>
-                  </div>
-<!-- 
-                  <div class="content-div">
-                    <span class="content-title">Height: </span> 
-                    <span class="content-value">{{ pokemon.height }}</span>
-
-                    <span class="content-title">Weight: </span> 
-                    <span class="content-value">{{ pokemon.weight }}</span>
-                  </div>
-                  
-                  <div class="content-div">
-                    <span class="content-title">Based Experience: </span> 
-                    <span class="content-value">{{ pokemon.base_experience }}</span>
-                  </div> -->
-                </div>
-<!--                 <div>
-                  <div class="content-div">
-                    <span class="content-title">Stats</span>
-                    <div class="stats-container">
-                      <div v-for="(stats, id) in pokemon.stats" :key="id" class="stats-item">
-                        <span>
-                          <b>{{ statsFormatName(stats.stat.name) }}: </b> 
-                          <span class="content-value">{{ stats.base_stat }}</span>
-                        </span>                  
-                      </div>
-                    </div>                
-                  </div>
-                </div> -->
-              </div>              
-            
-
-          
           
         </div>
+        
       </div>
     </div>
   </div>
-
-  <br>
-  <br>
-  <br>
-  <br>
-  <br>
-  <br>
-  <br>  
+ 
 </template>
 
 <script>
@@ -85,7 +47,17 @@ export default {
   'name': 'Pokemon',
   data(){
     return {
-      pokemon: {}
+      pokemon: {
+        name: "",
+        image: "",
+        types: [
+          {
+            type: {
+              name: ""
+            }
+          }
+        ]
+      }
     }
   },
   setup(){
@@ -103,29 +75,29 @@ export default {
   },
   methods: {
     loadPokemonData(id) {
+
       let data = null;
 
       axios
       .get(`https://pokeapi.co/api/v2/pokemon/${id}`)
       .then( response => response.data )
       .then( response => {
-        
+
         data = response;
         data.image = `https://pokeres.bastionbot.org/images/pokemon/${data.id}.png`;
         this.pokemon = data;
 
       })
-      .then(() => {
-        this.disabledNextButton = false;
-        this.disabledPrevButton = false;
-      })
       .catch( err => console.error(err) )        
 
     },
     capitalizeFirstLetter(name){
+
       return name.charAt(0).toUpperCase() + name.slice(1);
+
     },
     pokemonTypeBackground(type){
+
       if(type === "normal") return 'type-normal'
       if(type === "fire")   return 'type-fire'
       if(type === "water")  return 'type-water'
@@ -144,11 +116,14 @@ export default {
       if(type === "steel")  return 'type-steel'
       if(type === "dragon") return 'type-dragon'
       if(type === "dark")   return 'type-dark'
+
     },
     statsFormatName(name) {
+
       if(name.includes('special-attack')) return 'sp. attack';
       if(name.includes('special-defense')) return 'sp. defense';
       return name;
+
     },
     goBack(){
 
@@ -161,26 +136,47 @@ export default {
 
 <style lang="scss" scoped>
 .pokemon-container {
-  background: #f2f2f2;
-  padding: 20px;
-  width: 40%;
-  margin: 0 auto;
+  position: relative;
+  width: 80%;
+  height: 500px;
+  margin: 0px auto;
+  border-radius: 1rem !important;
+  overflow: hidden;
+  background: #fff;
+  
 
+  .pokemon-header {
+    position: absolute;
+    top: 20px;
+    left: 20px;
 
+    a {
+      cursor: pointer;
+    }
+  }
+
+  .pokemon-body {
+    height: 100%;
+    width: 100%;
+    border-top-right-radius: 60px;
+    border-top-left-radius: 60px;
+    margin-top: 50px;
+  }
 
   h1 {
     padding: 40px 0;
     font-size: 28px;
   }
 
-
   img {
-    height: 200px;
+    position: absolute;
+    top: 0px;
+    right: 0;
+    left: 0;
     display: block;
     margin: 50px auto 0 auto;
+    height: 200px;
   }
-
-  
 
   .pokemon-content {
     width: 100%;
