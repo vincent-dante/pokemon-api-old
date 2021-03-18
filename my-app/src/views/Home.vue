@@ -13,7 +13,9 @@
   <div class="row">
     <div class="col-lg-12">
 
-      <div class="box-container">
+      <img v-if="showLoading == true" src="../assets/pokeball-800x600.gif" alt="" srcset="" class="pokeball-loading">
+
+      <div v-if="showLoading != true" class="box-container">
         <div :class="'box-item-container shadow '+pokemonTypeBackground(pokemon.types[0].type.name)" v-for="pokemon in pokemonList" :key="pokemon.id">
 
           <div class="box-item" @click="showPokemonPage(pokemon.id)">
@@ -55,7 +57,8 @@ export default {
       pageOffSet: 0,
       disabledNextButton: false,
       disabledPrevButton: false,
-      search: ""
+      search: "",
+      showLoading: true
 
     }
   },
@@ -66,6 +69,7 @@ export default {
   },
   methods: {
     searchPokemon(){
+      this.showLoading = true;
 
       if (this.search.length === 0) this.loadPokemonHomePage();
       if (this.search.length !== 0) this.searchSinglePokemon();
@@ -76,6 +80,7 @@ export default {
       axios
       .get(`/pokemon`)
       .then( response => this.pokemonList = response.data )
+      .then( () => this.showLoading = false )
       .catch( err => console.error(err) ) 
 
     },
@@ -93,6 +98,7 @@ export default {
         this.pokemonList = [];
         this.pokemonList.push(data);
       })
+      .then( () => this.showLoading = false )
       .catch( err => console.error(err) ) 
 
     },

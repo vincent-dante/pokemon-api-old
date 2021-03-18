@@ -28,7 +28,7 @@
 
 <style lang="scss">
 body {
-  background: #f0f0f0;
+  background: #f3fcff;
 }
 
 #app {
@@ -43,6 +43,10 @@ body {
 .app-container {
   position: relative;
   margin: 50px 0;
+}
+
+.pokeball-loading {
+  width: 500px;
 }
 
 .background-container {
