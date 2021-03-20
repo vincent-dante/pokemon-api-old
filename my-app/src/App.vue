@@ -93,11 +93,27 @@ body {
   margin-right: 5px;
 }
 
-.type-normal {
-  fill: #b5b5b5;
+.back-button { 
+  text-decoration: none;
+  color: #242424;
+}
 
-  background: #b5b5b5;
-  color: #2c3e50;
+.type-normal {
+  path {
+    fill: #b5b5b5;
+  }
+
+  .box-item {
+    background-image: linear-gradient(to bottom right, #e6e6e6, #b5b5b5);
+  }
+
+  > .pokemon-type {
+    background: #b5b5b5;
+  }
+
+  .back-button {
+    color: #fff;
+  } 
 }
 
 .type-fire {
@@ -109,26 +125,73 @@ body {
     background-image: linear-gradient( to bottom right, #ffba8b, #ff7f27);
   }
 
-  .pokemon-type {
+  > .pokemon-type {
     background: #ff6427;
   }
+
+  .back-button {
+    color: #fff;
+  }  
 }
 
 .type-fighting {
-  background: #d56723;
+  path {
+    fill: #d56723;
+  }
+
+  .box-item {
+    background-image: linear-gradient(to bottom right, #f4ac80, #d56723);
+  }
+
+  > .pokemon-type {
+    background: #d56723;
+  }
+
+  .back-button {
+    color: #fff;
+  }   
 }
 
 .type-flying {
-  background: #8f75ea;
+
+  > .pokemon-type {
+    background: #72cece;
+    color: #222;
+  }
+
 }
 
 .type-fairy {
-  background: #fdb9e9;
-  color: #222;
+  path {
+    fill: #fdb9e9;
+  }
+
+  .box-item {
+    background-image: linear-gradient(to bottom right, #ffe0f6, #e384c7);
+  }
+
+  > .pokemon-type {
+    background: #fdb9e9;
+    color: #222;
+  }
 }
 
 .type-water {
-  background: #4592c4;
+  path {
+    fill: #4592c4;
+  }
+
+  .box-item {
+    background-image: linear-gradient(to bottom right, #9bd6fd, #4592c4);
+  }
+
+  > .pokemon-type {
+    background: #4592c4;
+  }
+
+  .back-button {
+    color: #fff;
+  }
 }
 
 .type-grass {
@@ -140,29 +203,50 @@ body {
     background-image: linear-gradient( to bottom right, #b8df7d, #80a843);
   }
 
-  .pokemon-type {
+  > .pokemon-type {
     background: #548a45;
+  }
+
+  .back-button {
+    color: #fff;
   }
 }
 
 .type-poison {
-/*   background: #975aa8;
-
   path {
-    fill: #9ed78e;
+    fill: #975aa8;
   }
 
   .box-item {
-    background-image: linear-gradient( to bottom right, #b8df7d, #80a843);
-  } */
+    background-image: linear-gradient(to bottom right, #eab0fb, #975aa8);
+  }
 
-  .pokemon-type {
+  > .pokemon-type {
     background: #975aa8;
   }
+
+  .back-button {
+    color: #fff;
+  }  
 }
 
 .type-bug {
-  background: #699339;
+  path {
+    fill: #699339;
+  }
+
+  .box-item {
+    background-image: linear-gradient(to bottom right, #b8e386, #699339);
+  }
+
+  > .pokemon-type {
+    background: #699339;
+    color: #fff;
+  }
+
+  .back-button {
+    color: #fff;
+  }  
 }
 
 .type-electric {
@@ -174,44 +258,166 @@ body {
     background-image: linear-gradient( to bottom right, #ffe88c, #ff8f00);
   }
 
-  .pokemon-type {
+  > .pokemon-type {
     background: #ffe53c;
     color: #222;
   }
 }
 
 .type-ground {
-  background: #cca04b;
+  path {
+    fill: #cca04b;
+  }
+
+  .box-item {
+    background-image: linear-gradient(to bottom right, #f9d48d, #cca04b);
+  }
+
+  > .pokemon-type {
+    background: #cca04b;
+    color: #fff;
+  }
+
+  .back-button {
+    color: #fff;
+  }  
 }
 
 .type-psychic {
-  background: #b9607d;
+  path {
+    fill: #b9607d;
+  }
+
+  .box-item {
+    background-image: linear-gradient(to bottom right, #f2aac1, #b9607d);
+  }
+
+  > .pokemon-type {
+    background: #b9607d;
+    color: #fff;
+  }
+
+  .back-button {
+    color: #fff;
+  }
 }
 
 .type-ghost {
-  background: #6a5093;
+  path {
+    fill: #6a5093;
+  }
+
+  .box-item {
+    background-image: linear-gradient(to bottom right, #ba9de8, #6a5093);
+  }
+
+  > .pokemon-type {
+    background: #6a5093;
+    color: #fff;
+  }
+
+  .back-button {
+    color: #fff;
+  }
 }
 
 .type-ice {
-  background: #51c4e7;
-  color: #222;
+  path {
+    fill: #51c4e7;
+  }
+
+  .box-item {
+    background-image: linear-gradient(to bottom right, #a6eaff, #51c4e7);
+  }
+
+  > .pokemon-type {
+    background: #51c4e7;
+    color: #fff;
+  }
+
+  .back-button {
+    color: #fff;
+  }
 }
 
 .type-rock {
-  background: #8f7a18;
+  path {
+    fill: #8f7a18;
+  }
+
+  .box-item {
+    background-image: linear-gradient(to bottom right, #dbc55f, #8f7a18);
+  }
+
+  > .pokemon-type {
+    background: #8f7a18;
+    color: #fff;
+  }
+
+  .back-button {
+    color: #fff;
+  }  
 }
 
 .type-steel {
-  background: #9eb7b8;
+  path {
+    fill: #9eb7b8;
+  }
+
+  .box-item {
+    background-image: linear-gradient(to bottom right, #d2e9ea, #9eb7b8);
+  }
+
+  > .pokemon-type {
+    background: #9eb7b8;
+    color: #fff;
+  }
+
+  .back-button {
+    color: #fff;
+  }  
 }
 
 .type-dragon {
-  background: #d90a0a;
+  path {
+    fill: #d90a0a;
+  }
+
+  .box-item {
+    background-image: linear-gradient(to bottom right, #f48585, #d90a0a);
+  }
+
+  > .pokemon-type {
+    background: #d90a0a;
+    color: #fff;
+  }
+
+  .back-button {
+    color: #fff;
+  }  
 }
 
 .type-dark {
-  fill: #3e3d3d;
-  background: #3e3d3d;
+  path {
+    fill: #3e3d3d;
+  }
+
+  .box-item {
+    background-image: linear-gradient(to bottom right, #606060, #3e3d3d);
+    
+    .pokemon-name {
+      color: #fff;
+    }
+  }
+
+  > .pokemon-type {
+    background: #3e3d3d;
+    color: #fff;
+  }
+
+  .back-button {
+    color: #fff;
+  }  
 }
 
 .data-provider {

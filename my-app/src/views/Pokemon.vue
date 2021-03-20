@@ -13,8 +13,8 @@
           </svg>
         </div>
 
-        <div class="pokemon-header">
-          <a @click="$router.go(-1)">
+        <div :class="'pokemon-header '+ pokemonTypeBackground(pokemon.types[0].type.name)">
+          <a @click="$router.go(-1)" class="back-button">
             <i class="bi bi-arrow-left"></i>
             Back
           </a>
@@ -281,6 +281,4 @@ export default {
   }
 
 }
-
-
 </style>

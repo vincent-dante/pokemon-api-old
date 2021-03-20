@@ -26,7 +26,7 @@
               <img :src="pokemon.image" alt="" srcset="">
             </div>
 
-            <p class="text-center">{{ capitalizeFirstLetter(pokemon.name) }} </p>
+            <p class="text-center pokemon-name">{{ capitalizeFirstLetter(pokemon.name) }} </p>
 
             <div class="pokemon-type-container">
               <span v-for="(type, id) in pokemon.types" :key="id" :class="pokemonTypeBackground(type.type.name)">
