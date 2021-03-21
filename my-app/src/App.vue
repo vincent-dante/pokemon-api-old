@@ -46,7 +46,7 @@ body {
 }
 
 .pokeball-loading {
-  width: 500px;
+  width: 400px;
 }
 
 .background-container {
@@ -450,6 +450,10 @@ body {
       left: 0;
       width: 100%;
     }  
+  }
+
+  .pokeball-loading {
+    width: 500px;
   }
 }
 

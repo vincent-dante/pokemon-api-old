@@ -257,9 +257,20 @@ export default {
   }
   
   .box-item-container {
-    width: 20%;
+    width: 40%;
   }
 
 }
 
+@media only screen and (min-width: 992px) {
+  .box-item-container {
+    width: 30%;
+  }
+}
+
+@media only screen and (min-width: 1281px) {
+  .box-item-container {
+    width: 20%;
+  }
+}
 </style>
