@@ -29,7 +29,8 @@ app.get('/pokemon/search/:name', (req, res) => {
 
   fetch(`https://pokeapi.co/api/v2/pokemon/${req.params.name}`)
   .then( response => {
-    return response.json()
+    if(response.status == '404') return '404';
+    else return response.json();
   })
   .then( response => {
     res.send(response)

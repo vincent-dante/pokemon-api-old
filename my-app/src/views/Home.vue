@@ -15,27 +15,32 @@
 
       <img v-if="showLoading == true" src="../assets/pokeball-800x600.gif" alt="" srcset="" class="pokeball-loading">
 
-      <div v-if="showLoading != true" class="box-container">
-        <div :class="'box-item-container shadow '+pokemonTypeBackground(pokemon.types[0].type.name)" v-for="pokemon in pokemonList" :key="pokemon.id">
+      <div v-if="showLoading != true">
+        <div v-if="resultFound" class="box-container">
+          <div :class="'box-item-container shadow '+pokemonTypeBackground(pokemon.types[0].type.name)" v-for="pokemon in pokemonList" :key="pokemon.id">
 
-          <div class="box-item" @click="showPokemonPage(pokemon.id)">
-            <p class="clearfix">
-              <span class="pokemon-id rounded-pill">#{{ pokemon.id }}</span>
-            </p>
-            <div class="grid-item-image-container">
-              <img :src="pokemon.image" alt="" srcset="">
-            </div>
+            <div class="box-item" @click="showPokemonPage(pokemon.id)">
+              <p class="clearfix">
+                <span class="pokemon-id rounded-pill">#{{ pokemon.id }}</span>
+              </p>
+              <div class="grid-item-image-container">
+                <img :src="pokemon.image" alt="" srcset="">
+              </div>
 
-            <p class="text-center pokemon-name">{{ capitalizeFirstLetter(pokemon.name) }} </p>
+              <p class="text-center pokemon-name">{{ capitalizeFirstLetter(pokemon.name) }} </p>
 
-            <div class="pokemon-type-container">
-              <span v-for="(type, id) in pokemon.types" :key="id" :class="pokemonTypeBackground(type.type.name)">
-                <span class="pokemon-type rounded-pill">{{ capitalizeFirstLetter(type.type.name) }}</span>
-              </span>
+              <div class="pokemon-type-container">
+                <span v-for="(type, id) in pokemon.types" :key="id" :class="pokemonTypeBackground(type.type.name)">
+                  <span class="pokemon-type rounded-pill">{{ capitalizeFirstLetter(type.type.name) }}</span>
+                </span>
+              </div>
+
             </div>
 
           </div>
-
+        </div>
+        <div v-else class="div-noresult text-center">
+          No Result Found...
         </div>
       </div>  
 
@@ -58,7 +63,8 @@ export default {
       pageOffSet: 0,
       disabledNextButton: false,
       disabledPrevButton: false,
-      showLoading: true
+      showLoading: true,
+      resultFound: true
 
     }
   },
@@ -85,6 +91,7 @@ export default {
 
     },
     loadPokemonHomePage() {
+      this.resultFound = true; 
 
       axios
       .get(`/pokemon`)
@@ -102,10 +109,18 @@ export default {
       axios
       .get(`/pokemon/search/${search}`)
       .then( response => {
+
         data = response.data;
+
+        if(data == 404) {
+          this.resultFound = false; 
+          return '';
+        }
+
         data.image = `https://pokeres.bastionbot.org/images/pokemon/${data.id}.png`;
         this.pokemonList = [];
         this.pokemonList.push(data);
+        this.resultFound = true; 
       })
       .then( () => this.showLoading = false )
       .catch( err => console.error(err) ) 
@@ -245,8 +260,8 @@ export default {
   margin-top: 50px;
 }
 
-.pagination-container-button {
-  padding-top: 40px;
+.div-noresult {
+  padding: 50px 0;
 }
 
 @media only screen and (min-width: 768px) {
