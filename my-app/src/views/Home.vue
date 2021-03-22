@@ -45,6 +45,7 @@
 </template>
 
 <script>
+import { useRoute } from 'vue-router'
 const axios = require('axios');
 
 export default {
@@ -57,11 +58,19 @@ export default {
       pageOffSet: 0,
       disabledNextButton: false,
       disabledPrevButton: false,
-      search: "",
       showLoading: true
 
     }
   },
+  setup(){
+
+    const route = useRoute();
+    const search = (route.query.search === undefined) ? "" : route.query.search;
+    return {
+      search
+    };
+
+  },  
   mounted(){
 
     this.searchPokemon();
@@ -104,7 +113,7 @@ export default {
     },
     showPokemonPage(id){
 
-      this.$router.push({ path: `/pokemon/${id}`})  
+      this.$router.push({ path: `/pokemon/${id}`, query: { search: this.search } })  
       
     },
     capitalizeFirstLetter(name){

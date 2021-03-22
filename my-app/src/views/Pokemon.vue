@@ -14,7 +14,7 @@
         </div>
 
         <div :class="'pokemon-header '+ pokemonTypeBackground(pokemon.types[0].type.name)">
-          <a @click="$router.go(-1)" class="back-button">
+          <a @click.prevent="goBack()" class="back-button">
             <i class="bi bi-arrow-left"></i>
             Back
           </a>
@@ -111,9 +111,11 @@ export default {
   setup(){
     const route = useRoute();
     const id = route.params.id;
+    const search = route.query.search;
 
     return {
-      id
+      id,
+      search
     };
   },
   mounted(){
@@ -171,7 +173,7 @@ export default {
     },
     goBack(){
 
-      this.$router.go(-1)
+      this.$router.push({ path: '/', query: { search: this.search } }) 
 
     }
   }
