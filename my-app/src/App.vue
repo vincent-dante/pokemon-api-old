@@ -162,6 +162,10 @@ body {
 }
 
 .type-electric {
+  .content-value {
+    color: #fd0;
+  }
+
   path {
     fill: #ffe53c;
   }

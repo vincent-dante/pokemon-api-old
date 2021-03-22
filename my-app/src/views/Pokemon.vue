@@ -33,44 +33,45 @@
             </span>
           </div>
 
-          <div class="pokemon-content">
-                <div class="content-div">
-                  
-                  <span v-for="(ability, id) in pokemon.abilities" :key="id" class="pokemon-ability rounded-1 text-capitalize">
-                    {{ ability.ability.name }}
-                  </span>
-                  <h2 class="content-title">Abilities</h2>
-                </div>
-                 
+          <div :class="'pokemon-content '+pokemonTypeBackground(pokemon.types[0].type.name)">
 
-                <div class="content-div">
-                  <span class="content-title">Height: </span> 
-                  <span class="content-value">{{ pokemon.height }}</span>
-                </div>
 
-                <div class="content-div">
-                  <span class="content-title">Weight: </span> 
-                  <span class="content-value">{{ pokemon.weight }}</span>
-                </div>
-                
-                <div class="content-div">
-                  <span class="content-title">Based Experience: </span> 
-                  <span class="content-value">{{ pokemon.base_experience }}</span>
-                </div>
+            <div class="content-div">
+              <div>
+                <span v-for="(ability, id) in pokemon.abilities" :key="id" class="text-capitalize">
+                  {{ ability.ability.name }}
+                </span>
+                <h2 class="content-title">Abilities</h2>
+              </div>
+            </div>
 
-                <hr>
-                
-                <div>
-                  <span class="content-title">Stats:</span>
-                  <div class="stats-container">
-                    <div v-for="(stats, id) in pokemon.stats" :key="id" class="stats-item">
-                      <span>
-                        {{ statsFormatName(stats.stat.name) }}: 
-                        <span class="content-value">{{ stats.base_stat }}</span>
-                      </span>                  
-                    </div>
-                  </div>                
-                </div>            
+            <div class="content-div first-grid">
+              <div>
+                <span class="content-value">{{ pokemon.base_experience }}</span>
+                <h2 class="content-title">Based Exp.</h2> 
+              </div>              
+              <div>
+                <span class="content-value">{{ pokemon.height }}</span>
+                <h2 class="content-title">Height</h2> 
+              </div>
+              <div>            
+                <span class="content-value">{{ pokemon.weight }}</span>
+                <h2 class="content-title">Weight</h2> 
+              </div>
+            </div>
+
+
+            <div>
+              <div class="stats-container">
+                <div v-for="(stats, id) in pokemon.stats" :key="id" class="stats-item">
+                  <span class="content-value">{{ stats.base_stat }}</span>
+                  <span>
+                    {{ statsFormatName(stats.stat.name) }}
+                  </span>                  
+                </div>
+              </div>                
+            </div>
+         
           </div>
 
         </div>
@@ -243,20 +244,34 @@ export default {
     padding: 20px 0 50px 0;
 
     .content-div {
+      text-align: center;
       padding-top: 20px;
       width: 70%;
       margin: 0 auto;
     }
 
+    .first-grid {
+      display: inline-grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      width: 100%;
+
+    }
+
     .stats-container {
       display: inline-grid;
       grid-template-columns: repeat(3, 1fr);
+      justify-items: center;
       width: 100%;
       margin-bottom: 40px;
     }
 
     .stats-item {
-      padding: 10px 20px 0 0;  
+      /* padding: 10px 20px 0 0;   */
+
+      span {
+        display: block;
+        text-align: center;
+      }
     }
 
     .pokemon-type-container {
@@ -266,10 +281,12 @@ export default {
 
     .content-title {
       color: #2c3e50;
+      font-size: 16px;
+      text-align: center;
     }
 
     .content-value {
-      color: #d6317e;
+      font-size: 32px;
     }
 
     .pokemon-ability {
@@ -292,7 +309,8 @@ export default {
     float: left;
     padding: 0 10px;
     text-decoration: none;
-  }
+  } 
+
 
 }
 
