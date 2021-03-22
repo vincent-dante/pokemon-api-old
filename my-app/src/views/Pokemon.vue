@@ -1,25 +1,26 @@
 <template>
 
-  <div class="row">    
+  <img v-if="showLoading == true" src="../assets/pokeball-800x600.gif" alt="" srcset="" class="pokeball-loading">
+
+  <div v-if="showLoading != true" class="row">    
     <div class="col-lg-12">
       <div class="pokemon-container shadow-lg">
         
-        <div :class="pokemonTypeBackground(pokemon.types[0].type.name)">
-          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320">
-            <path fill-opacity="1" d="M0,256L48,229.3C96,203,192,149,288,154.7C384,160,480,224,576,256C672,288,768,288,864,250.7C960,213,1056,139,1152,106.7C1248,75,1344,85,1392,90.7L1440,96L1440,0L1392,0C1344,0,1248,0,1152,0C1056,0,960,0,864,0C768,0,672,0,576,0C480,0,384,0,288,0C192,0,96,0,48,0L0,0Z">
+        <div :class="'pokemon-svg-top '+pokemonTypeBackground(pokemon.types[0].type.name)">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320" class="svg-path">
+            <path  fill-opacity="1" d="M0,128L48,149.3C96,171,192,213,288,229.3C384,245,480,235,576,213.3C672,192,768,160,864,165.3C960,171,1056,213,1152,213.3C1248,213,1344,171,1392,149.3L1440,128L1440,0L1392,0C1344,0,1248,0,1152,0C1056,0,960,0,864,0C768,0,672,0,576,0C480,0,384,0,288,0C192,0,96,0,48,0L0,0Z">
             </path>
           </svg>
         </div>
 
-        <div class="pokemon-header">
-          <a @click="$router.go(-1)">
+        <div :class="'pokemon-header '+ pokemonTypeBackground(pokemon.types[0].type.name)">
+          <a @click="$router.go(-1)" class="back-button">
             <i class="bi bi-arrow-left"></i>
             Back
           </a>
-        </div>
-
-        <div class="pokemon-left-text-design text-uppercase">
-          <h1>{{ pokemon.name }}</h1>
+          <span class="pokemon-id rounded-pill">
+            #{{ pokemon.id }}
+          </span>
         </div>
 
         <img :src="pokemon.image" alt="" srcset="">
@@ -33,49 +34,50 @@
             </span>
           </div>
 
-          <div :class="'pokemon-content '+pokemonTypeBackground(pokemon.types[0].type.name)">
-
-
-            <div class="content-div">
+          <div class="pokemon-content">
+            <div class="content-ability">
               <div>
                 <span v-for="(ability, id) in pokemon.abilities" :key="id" class="text-capitalize">
-                  {{ ability.ability.name }}
+                  <span v-if="id != 0"> | </span> {{ ability.ability.name }}
                 </span>
-                <h2 class="content-title">Abilities</h2>
+                
               </div>
+              <div>Abilities</div>
             </div>
-
-            <div class="content-div first-grid">
+                 
+            <div class="content-div">
               <div>
-                <span class="content-value">{{ pokemon.base_experience }}</span>
-                <h2 class="content-title">Based Exp.</h2> 
-              </div>              
+                <span class="content-value">{{ pokemon.base_experience }}</span>  
+                <span class="content-title">Based Exp.</span>                                      
+              </div>
               <div>
                 <span class="content-value">{{ pokemon.height }}</span>
-                <h2 class="content-title">Height</h2> 
+                <span class="content-title">Height</span>                   
               </div>
-              <div>            
+              <div>
                 <span class="content-value">{{ pokemon.weight }}</span>
-                <h2 class="content-title">Weight</h2> 
+                <span class="content-title">Weight</span>                    
               </div>
             </div>
 
-
-            <div>
-              <div class="stats-container">
-                <div v-for="(stats, id) in pokemon.stats" :key="id" class="stats-item">
-                  <span class="content-value">{{ stats.base_stat }}</span>
-                  <span>
-                    {{ statsFormatName(stats.stat.name) }}
-                  </span>                  
-                </div>
-              </div>                
+            <div class="content-div">
+              <div v-for="(stats, id) in pokemon.stats" :key="id">                
+                <span class="content-value">{{ stats.base_stat }}</span>          
+                <span>{{ statsFormatName(stats.stat.name) }}</span>      
+              </div>
             </div>
-         
           </div>
 
         </div>
         
+
+        <div :class="pokemonTypeBackground(pokemon.types[0].type.name)">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320">
+            <path fill-opacity="1" d="M0,128L48,149.3C96,171,192,213,288,229.3C384,245,480,235,576,213.3C672,192,768,160,864,165.3C960,171,1056,213,1152,213.3C1248,213,1344,171,1392,149.3L1440,128L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z">
+            </path>
+          </svg>         
+        </div>
+
       </div>
     </div>
   </div>
@@ -90,6 +92,7 @@ export default {
   'name': 'Pokemon',
   data(){
     return {
+
       pokemon: {
         name: "",
         image: "",
@@ -100,7 +103,9 @@ export default {
             }
           }
         ]
-      }
+      },
+      showLoading: true
+
     }
   },
   setup(){
@@ -131,6 +136,7 @@ export default {
         this.pokemon = data;
 
       })
+      .then( () => this.showLoading = false )
       .catch( err => console.error(err) )        
 
     },
@@ -175,7 +181,7 @@ export default {
 <style lang="scss" scoped>
 .pokemon-container {
   position: relative;
-  width: 80%;
+  width: 100%;
   min-height: 500px;
   margin: 0px auto;
   border-radius: 1rem !important;
@@ -185,32 +191,13 @@ export default {
 
   .pokemon-header {
     position: absolute;
-    top: 20px;
-    left: 20px;
+    top: 10px;
+    width: 100%;
+    padding: 0 20px;
 
     a {
+      float: left;
       cursor: pointer;
-    }
-  }
-
-  .pokemon-left-text-design {
-    position: absolute;
-    transform: rotate(-90deg);
-    left: -100px;
-    bottom: 100px;
-
-    h1 {
-      padding: 0;
-    }
-
-    h1::before {
-      content: "";
-      display: inline-block;
-      background: #d5d5d5;
-      width: 200px;
-      height: 1px;
-      transform: translateY(-9px);
-      margin-right: 20px;
     }
   }
 
@@ -223,7 +210,7 @@ export default {
   }
 
   h1 {
-    padding: 40px 0;
+    padding: 40px 0 20px 0;
     font-size: 28px;
   }
 
@@ -238,39 +225,35 @@ export default {
   }
 
   .pokemon-content {
-    width: 70%;
+    width: 100%;
     text-align: left;
     margin: 0 auto;
     padding: 20px 0 50px 0;
 
     .content-div {
-      text-align: center;
-      padding-top: 20px;
-      width: 70%;
-      margin: 0 auto;
-    }
-
-    .first-grid {
       display: inline-grid;
       grid-template-columns: 1fr 1fr 1fr;
-      width: 100%;
-
-    }
-
-    .stats-container {
-      display: inline-grid;
-      grid-template-columns: repeat(3, 1fr);
       justify-items: center;
       width: 100%;
-      margin-bottom: 40px;
-    }
+      margin: 0 auto;
 
-    .stats-item {
-      /* padding: 10px 20px 0 0;   */
+      div {
+        padding-top: 30px;
+      }
 
       span {
         display: block;
         text-align: center;
+      }
+    }
+
+    .content-ability {
+      display: grid;
+      width: 100%;
+      justify-items: center;
+
+      span {
+        color: #d6317e;
       }
     }
 
@@ -281,23 +264,14 @@ export default {
 
     .content-title {
       color: #2c3e50;
-      font-size: 16px;
-      text-align: center;
     }
 
     .content-value {
+      color: #d6317e;
       font-size: 32px;
     }
 
-    .pokemon-ability {
-      padding: 2px 20px;
-      margin-right: 5px;
-      background: #567080;
-      color: #fff;
-      font-size: 14px;
-    }
-
-    .pokemon-type-size{
+    .pokemon-type-size {
       font-size: 14px;
       padding: 2px 20px;
       text-align: center;
@@ -309,10 +283,30 @@ export default {
     float: left;
     padding: 0 10px;
     text-decoration: none;
-  } 
+  }
 
+  .pokemon-id {
+    font-size: 20px;
+  }
+
+  .pokemon-svg-top {
+    height: 200px;
+  }
 
 }
 
 
+@media only screen and (min-width: 768px) {
+  .pokemon-container {
+    width: 80%;
+
+    .pokemon-header {
+      top: 20px;
+    }
+
+    .pokemon-content {
+      width: 70%;
+    }
+  }
+}
 </style>

@@ -13,7 +13,9 @@
   <div class="row">
     <div class="col-lg-12">
 
-      <div class="box-container">
+      <img v-if="showLoading == true" src="../assets/pokeball-800x600.gif" alt="" srcset="" class="pokeball-loading">
+
+      <div v-if="showLoading != true" class="box-container">
         <div :class="'box-item-container shadow '+pokemonTypeBackground(pokemon.types[0].type.name)" v-for="pokemon in pokemonList" :key="pokemon.id">
 
           <div class="box-item" @click="showPokemonPage(pokemon.id)">
@@ -24,7 +26,7 @@
               <img :src="pokemon.image" alt="" srcset="">
             </div>
 
-            <p class="text-center">{{ capitalizeFirstLetter(pokemon.name) }} </p>
+            <p class="text-center pokemon-name">{{ capitalizeFirstLetter(pokemon.name) }} </p>
 
             <div class="pokemon-type-container">
               <span v-for="(type, id) in pokemon.types" :key="id" :class="pokemonTypeBackground(type.type.name)">
@@ -55,7 +57,8 @@ export default {
       pageOffSet: 0,
       disabledNextButton: false,
       disabledPrevButton: false,
-      search: ""
+      search: "",
+      showLoading: true
 
     }
   },
@@ -66,6 +69,7 @@ export default {
   },
   methods: {
     searchPokemon(){
+      this.showLoading = true;
 
       if (this.search.length === 0) this.loadPokemonHomePage();
       if (this.search.length !== 0) this.searchSinglePokemon();
@@ -76,6 +80,7 @@ export default {
       axios
       .get(`/pokemon`)
       .then( response => this.pokemonList = response.data )
+      .then( () => this.showLoading = false )
       .catch( err => console.error(err) ) 
 
     },
@@ -93,6 +98,7 @@ export default {
         this.pokemonList = [];
         this.pokemonList.push(data);
       })
+      .then( () => this.showLoading = false )
       .catch( err => console.error(err) ) 
 
     },
@@ -251,9 +257,20 @@ export default {
   }
   
   .box-item-container {
-    width: 20%;
+    width: 40%;
   }
 
 }
 
+@media only screen and (min-width: 992px) {
+  .box-item-container {
+    width: 30%;
+  }
+}
+
+@media only screen and (min-width: 1281px) {
+  .box-item-container {
+    width: 20%;
+  }
+}
 </style>
