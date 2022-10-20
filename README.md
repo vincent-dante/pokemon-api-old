@@ -10,4 +10,4 @@ Hi there :wave: this is my project for Poké API.
 - :fire: Node.js
 
 ## Live Preview
-https://pokemon-app-vincentdante.herokuapp.com/#/
+https://poke-api-vincentdante.up.railway.app/#/
